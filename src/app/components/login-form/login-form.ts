@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AuthService } from '../../services/Auth/auth-service';
+import { AuthService } from '../../services/AuthService/auth-service';
 import { IUserLogin } from '../../types/type';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class LoginForm {
   // Accede au service d'authentification
-  private auth = inject(AuthService);
+  private authService = inject(AuthService);
   //Accede au router service
   private router = inject(Router);
 
@@ -27,7 +27,7 @@ export class LoginForm {
 
   onSubmit() {
     const credentials: IUserLogin = this.loginForm.value as IUserLogin
-    this.auth.login(credentials).subscribe({
+    this.authService.login(credentials).subscribe({
       next: () => {
         this.router.navigate(['/home'])
       },

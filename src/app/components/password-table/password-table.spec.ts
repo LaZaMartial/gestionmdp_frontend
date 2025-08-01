@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaswwordTable } from './paswword-table';
+import { PasswordTable } from './password-table';
 
 describe('PaswwordTable', () => {
-  let component: PaswwordTable;
-  let fixture: ComponentFixture<PaswwordTable>;
+  let component: PasswordTable;
+  let fixture: ComponentFixture<PasswordTable>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaswwordTable]
+      imports: [PasswordTable]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(PaswwordTable);
+    fixture = TestBed.createComponent(PasswordTable);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

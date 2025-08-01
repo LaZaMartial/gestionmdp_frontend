@@ -1,4 +1,4 @@
-import { IAuthResponse } from './../../types/type';
+import { IAuthResponse } from '../../types/type';
 import { inject, Injectable } from '@angular/core';
 import { HttpRequestService } from '../http-request-service';
 import { IUserLogin } from '../../types/type';
@@ -28,6 +28,7 @@ export class AuthService {
     this.clearSession();
   }
 
+  // set the token and the user to the local storage
   private setSession(token: string, user: IAuthResponse['user']) {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -35,6 +36,7 @@ export class AuthService {
     this._user.next(user);
   }
 
+  // remove the token and the user from the local storage
   private clearSession() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -42,10 +44,12 @@ export class AuthService {
     this._user.next(null);
   }
 
+  // get the token
   private loadToken(): string | null {
     return localStorage.getItem('token');
   }
 
+  // get the user
   private loadUser(): IAuthResponse['user'] | null {
     const stored = localStorage.getItem('user');
     return stored ? JSON.parse(stored) : null;
