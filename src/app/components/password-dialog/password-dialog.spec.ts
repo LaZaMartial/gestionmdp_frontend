@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PasswordAddDialog } from './password-add-dialog';
+import { PasswordAddDialog } from './password-dialog';
 
 describe('PasswordAddDialog', () => {
   let component: PasswordAddDialog;
@@ -10,7 +10,7 @@ describe('PasswordAddDialog', () => {
     await TestBed.configureTestingModule({
       imports: [PasswordAddDialog]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PasswordAddDialog);
     component = fixture.componentInstance;

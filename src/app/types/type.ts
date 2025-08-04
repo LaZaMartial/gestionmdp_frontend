@@ -48,3 +48,8 @@ export interface IPasswordPostResponse {
     message: string;
     data: IPassword;
 }
+
+export interface IDialogData {
+    action: 'add' | 'edit';
+    password?: IPassword;
+}

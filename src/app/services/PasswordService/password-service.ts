@@ -24,4 +24,8 @@ export class PasswordService {
   deletePassword(item: IPassword) {
     return this.http.delete(PASSWORD_ENDPOINT_WITH_PARAMS_URL(item.id)).pipe(catchError((err) => { console.log(err); throw err; }))
   }
+
+  updatePassword(id: number, item: Partial<IPasswordBody>) {
+    return this.http.patch(PASSWORD_ENDPOINT_WITH_PARAMS_URL(id), item).pipe(catchError((err) => { console.log(err); throw err; }));
+  }
 }

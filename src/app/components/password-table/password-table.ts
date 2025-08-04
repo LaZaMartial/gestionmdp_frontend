@@ -1,4 +1,4 @@
-import { IPasswordListResponse } from './../../types/type';
+import { IPasswordListResponse, IPasswordPostResponse } from './../../types/type';
 import { Component, inject, input, signal } from '@angular/core';
 import { PasswordService } from '../../services/PasswordService/password-service';
 import { IPassword } from '../../types/type';
@@ -6,6 +6,8 @@ import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { PasswordAddDialog } from '../password-dialog/password-dialog';
 @Component({
   selector: 'app-password-table',
   imports: [
@@ -25,6 +27,8 @@ export class PasswordTable {
   passwordItems = signal<Array<IPassword>>([]);
   displayedColumns: string[] = ['description', 'lien', 'login', 'motdepasse', 'dateCreation', 'dateModification', 'dateExpiration', 'observation', 'actions'];
 
+  readonly dialog = inject(MatDialog)
+
   // get all the password when the component is created
   ngOnInit(): void {
     this.passwordService
@@ -32,6 +36,12 @@ export class PasswordTable {
       .subscribe(
         (data: IPasswordListResponse) => { this.passwordItems.set(data.data) }
       );
+  }
+
+  // Delete password
+  delete(item: IPassword) {
+    this.passwordService.deletePassword(item).subscribe()
+    this.deleteRow(item)
   }
 
   // Update the list of password in the table
@@ -44,12 +54,29 @@ export class PasswordTable {
     this.passwordItems.update(list => list.filter(p => p.id !== item.id));
   }
 
-  // Delete password
-  delete(item: IPassword) {
-    this.passwordService.deletePassword(item).subscribe()
-    this.deleteRow(item)
+  patchRow(id: number, changes: Partial<IPassword>) {
+    this.passwordItems.update(list =>
+      list.map(item =>
+        item.id === id ? { ...item, ...changes } : item
+      )
+    );
   }
 
   // Update password
-  edit(item: IPassword) { /* ... */ }
+  openDialog(data: IPassword): void {
+    const dialogRef = this.dialog.open(PasswordAddDialog, {
+      data: { action: 'edit', password: data }
+    })
+
+    dialogRef.afterClosed().subscribe((result: IPasswordPostResponse) => {
+      if (result !== undefined) {
+        this.patchRow(result.data.id, {
+          login: result.data.login,
+          description: result.data.description,
+          lien: result.data.lien,
+          observation: result.data.observation
+        })
+      }
+    })
+  }
 }
