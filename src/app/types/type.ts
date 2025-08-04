@@ -14,7 +14,7 @@ export interface IAuthResponse {
     accessToken: string
 }
 
-// Password response type
+// Password type
 export interface IPassword {
     id: number,
     userId: number,
@@ -26,4 +26,25 @@ export interface IPassword {
     dateModification: string,
     dateExpiration: string,
     observation: string
+}
+
+// Get all passwordType
+export interface IPasswordListResponse {
+    message: string;
+    data: IPassword[];
+}
+
+// Posting password type
+export interface IPasswordBody {
+    login: string,
+    description: string,
+    lien: string,
+    motdepasse: string,
+    observation: string,
+}
+
+// Get one password type
+export interface IPasswordPostResponse {
+    message: string;
+    data: IPassword;
 }

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpRequestService } from '../http-request-service';
-import { IPassword } from '../../types/type';
+import { IPasswordBody, IPasswordListResponse, IPasswordPostResponse } from '../../types/type';
 import { PASSWORD_ENDPOINT_URL } from '../../constants/url';
 import { catchError } from 'rxjs';
 
@@ -10,7 +10,13 @@ import { catchError } from 'rxjs';
 export class PasswordService {
   private readonly http = inject(HttpRequestService)
 
+  // Get all password
   getPassword() {
-    return this.http.get<Array<IPassword>>(PASSWORD_ENDPOINT_URL).pipe(catchError((err) => { console.log(err); throw err; }))
+    return this.http.get<IPasswordListResponse>(PASSWORD_ENDPOINT_URL).pipe(catchError((err) => { console.log(err); throw err; }))
+  }
+
+  // Post password
+  postPassword(item: IPasswordBody) {
+    return this.http.post<IPasswordPostResponse>(PASSWORD_ENDPOINT_URL, item).pipe(catchError((err) => { console.log(err); throw err; }));
   }
 }

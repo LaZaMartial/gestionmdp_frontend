@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { PasswordTable } from '../../components/password-table/password-table';
+import { PasswordPage } from './password-page/password-page';
 
 @Component({
   selector: 'app-home-page',
-  imports: [PasswordTable],
+  imports: [PasswordPage],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css'
 })
