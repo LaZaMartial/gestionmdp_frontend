@@ -35,7 +35,7 @@ export class PasswordAddDialog {
     description: new FormControl(this.data.description),
     lien: new FormControl(this.data.lien),
     motdepasse: new FormControl(this.data.motdepasse),
-    observation: new FormControl(this.data.observation)
+    observation: new FormControl(this.data.observation || "")
   })
 
   // Submit the form in the dialog

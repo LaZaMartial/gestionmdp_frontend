@@ -40,7 +40,7 @@ export interface IPasswordBody {
     description: string,
     lien: string,
     motdepasse: string,
-    observation: string,
+    observation: string
 }
 
 // Get one password type

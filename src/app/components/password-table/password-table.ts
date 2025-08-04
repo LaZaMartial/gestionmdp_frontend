@@ -39,6 +39,17 @@ export class PasswordTable {
     this.passwordItems.update(list => [...list, items])
   }
 
+  // Delete the row of selected item
+  deleteRow(item: IPassword) {
+    this.passwordItems.update(list => list.filter(p => p.id !== item.id));
+  }
+
+  // Delete password
+  delete(item: IPassword) {
+    this.passwordService.deletePassword(item).subscribe()
+    this.deleteRow(item)
+  }
+
+  // Update password
   edit(item: IPassword) { /* ... */ }
-  delete(item: IPassword) { /* ... */ }
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpRequestService } from '../http-request-service';
-import { IPasswordBody, IPasswordListResponse, IPasswordPostResponse } from '../../types/type';
-import { PASSWORD_ENDPOINT_URL } from '../../constants/url';
+import { IPassword, IPasswordBody, IPasswordListResponse, IPasswordPostResponse } from '../../types/type';
+import { PASSWORD_ENDPOINT_URL, PASSWORD_ENDPOINT_WITH_PARAMS_URL } from '../../constants/url';
 import { catchError } from 'rxjs';
 
 @Injectable({
@@ -18,5 +18,10 @@ export class PasswordService {
   // Post password
   postPassword(item: IPasswordBody) {
     return this.http.post<IPasswordPostResponse>(PASSWORD_ENDPOINT_URL, item).pipe(catchError((err) => { console.log(err); throw err; }));
+  }
+
+  // Delete password
+  deletePassword(item: IPassword) {
+    return this.http.delete(PASSWORD_ENDPOINT_WITH_PARAMS_URL(item.id)).pipe(catchError((err) => { console.log(err); throw err; }))
   }
 }
