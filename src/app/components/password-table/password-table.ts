@@ -1,4 +1,4 @@
-import { IPasswordListResponse, IPasswordPostResponse } from './../../types/type';
+import { IPasswordListResponse, IPasswordResponse } from './../../types/type';
 import { Component, inject, input, signal } from '@angular/core';
 import { PasswordService } from '../../services/PasswordService/password-service';
 import { IPassword } from '../../types/type';
@@ -28,6 +28,8 @@ export class PasswordTable {
   displayedColumns: string[] = ['description', 'lien', 'login', 'motdepasse', 'dateCreation', 'dateModification', 'dateExpiration', 'observation', 'actions'];
 
   readonly dialog = inject(MatDialog)
+
+  realPasswordMap = signal<Map<number, string>>(new Map());
 
   // get all the password when the component is created
   ngOnInit(): void {
@@ -68,7 +70,7 @@ export class PasswordTable {
       data: { action: 'edit', password: data }
     })
 
-    dialogRef.afterClosed().subscribe((result: IPasswordPostResponse) => {
+    dialogRef.afterClosed().subscribe((result: IPasswordResponse) => {
       if (result !== undefined) {
         this.patchRow(result.data.id, {
           login: result.data.login,
@@ -79,4 +81,29 @@ export class PasswordTable {
       }
     })
   }
+
+  private fetchPassword(item: IPassword) {
+    this.passwordService
+      .getOnePassword(item.id)
+      .subscribe(res =>
+        this.realPasswordMap.update(map => {
+          const clone = new Map(map);
+          clone.set(item.id, res.data.motdepasse);
+          return clone;
+        })
+      );
+  }
+
+  toggleShow(item: IPassword) {
+    this.realPasswordMap.update(map => {
+      const clone = new Map(map);
+      if (clone.has(item.id)) {
+        clone.delete(item.id);
+      } else {
+        this.fetchPassword(item);
+      }
+      return clone;
+    });
+  }
 }
+

@@ -44,7 +44,7 @@ export interface IPasswordBody {
 }
 
 // Get one password type
-export interface IPasswordPostResponse {
+export interface IPasswordResponse {
     message: string;
     data: IPassword;
 }

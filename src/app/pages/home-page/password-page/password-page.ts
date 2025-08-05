@@ -1,4 +1,4 @@
-import { IPasswordPostResponse } from './../../../types/type';
+import { IPasswordResponse } from './../../../types/type';
 import { PasswordTable } from './../../../components/password-table/password-table';
 import { ChangeDetectionStrategy, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +29,7 @@ export class PasswordPage {
       data: { action: 'add', password: this.passwords() }
     })
 
-    dialogRef.afterClosed().subscribe((result: IPasswordPostResponse) => {
+    dialogRef.afterClosed().subscribe((result: IPasswordResponse) => {
       if (result !== undefined) {
         this.table.addRow(result.data);
       }
