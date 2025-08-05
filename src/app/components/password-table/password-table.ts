@@ -25,7 +25,7 @@ export class PasswordTable {
 
   // Initialize the array of the table
   passwordItems = signal<Array<IPassword>>([]);
-  displayedColumns: string[] = ['description', 'lien', 'login', 'motdepasse', 'dateCreation', 'dateModification', 'dateExpiration', 'observation', 'actions'];
+  displayedColumns: string[] = ['lien', 'description', 'login', 'motdepasse', 'dateCreation', 'dateModification', 'dateExpiration', 'observation', 'actions'];
 
   readonly dialog = inject(MatDialog)
 
@@ -82,6 +82,7 @@ export class PasswordTable {
     })
   }
 
+  // Fetch a single password and see it
   private fetchPassword(item: IPassword) {
     this.passwordService
       .getOnePassword(item.id)
@@ -94,6 +95,7 @@ export class PasswordTable {
       );
   }
 
+  // Toggle the visibility of the password
   toggleShow(item: IPassword) {
     this.realPasswordMap.update(map => {
       const clone = new Map(map);
@@ -104,6 +106,10 @@ export class PasswordTable {
       }
       return clone;
     });
+  }
+
+  changePassword(item: IPassword) {
+
   }
 }
 
