@@ -1,6 +1,6 @@
 import { IPasswordListResponse, IPasswordResponse } from './../../types/type';
 import { Component, inject, input, signal } from '@angular/core';
-import { PasswordService } from '../../services/PasswordService/password-service';
+import { PasswordService } from '../../services/password-service/password-service';
 import { IPassword } from '../../types/type';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';

@@ -1,12 +1,13 @@
-import { PasswordService } from '../../services/PasswordService/password-service';
+import { PasswordService } from '../../services/password-service/password-service';
 import { Component, inject, model } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { IDialogData, IPasswordBody } from '../../types/type';
+import { generatePassword } from '../../core/password-generator/password-generator-interceptor'
 
 @Component({
   selector: 'app-password-add-dialog',
@@ -36,12 +37,15 @@ export class PasswordAddDialog {
   private readonly passwordService = inject(PasswordService);
 
   passwordForm = new FormGroup({
-    login: new FormControl(this.data.password?.login ?? ''),
-    description: new FormControl(this.data.password?.description ?? ''),
-    lien: new FormControl(this.data.password?.lien ?? ''),
-    motdepasse: new FormControl(this.data.password?.motdepasse ?? ''),
+    login: new FormControl(this.data.password?.login ?? '', Validators.required),
+    description: new FormControl(this.data.password?.description ?? '', Validators.required),
+    lien: new FormControl(this.data.password?.lien ?? '', Validators.required),
+    motdepasse: new FormControl(this.data.password?.motdepasse ?? '', this.isEdit ? [] : Validators.required),
+    confirm: new FormControl('', this.isEdit ? [] : Validators.required),
     observation: new FormControl(this.data.password?.observation ?? '')
-  })
+  },
+    { validators: this.isEdit ? null : this.passwordMatchValidator }
+  )
 
   // Submit the form in the dialog
   submit(): void {
@@ -66,5 +70,16 @@ export class PasswordAddDialog {
   // Close the dialog
   onCancelClick(): void {
     this.dialogRef.close();
+  }
+
+  private passwordMatchValidator(g: AbstractControl): ValidationErrors | null {
+    const pwd = g.get('motdepasse')?.value;
+    const confirm = g.get('confirm')?.value;
+    return pwd === confirm ? null : { mismatch: true };
+  }
+
+  generatePassword(): void {
+    const generatedPassword = generatePassword();
+    this.passwordForm.patchValue({ motdepasse: generatedPassword, confirm: generatedPassword });
   }
 }

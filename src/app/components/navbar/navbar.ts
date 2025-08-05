@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AuthService } from '../../services/AuthService/auth-service';
+import { AuthService } from '../../services/auth-service/auth-service';
 import { Router } from '@angular/router';
 
 @Component({
